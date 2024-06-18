@@ -84,6 +84,21 @@ saques_realizados = 0
 LIMITE_SAQUE = 500
 LIMITES_SAQUE_DIARIO = 3
 
+def cliente():
+    pass
+
+def conta():
+    pass
+
+def saques():
+    pass
+
+def deposito():
+    pass
+
+def extrato():
+    pass
+
 while True:
     os.system("cls")
     print(menu)
