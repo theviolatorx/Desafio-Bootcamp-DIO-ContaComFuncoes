@@ -46,7 +46,184 @@ ESCOLHA A OPERAÇÃO:
 
 Escolha a sua opção:
 """
-clientes = {}
+clientes = {
+    "11111111111": {
+        "nome": "Paulo Ambrosio",
+        "datanascimento": "15/06/1975",
+        "endereco": {
+            "logradouro": "Av. Brasil",
+            "nro": 234,
+            "bairro": "Vila Nova Itanhaém",
+            "cidade": "Itanhaém",
+            "uf": "SP"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "22222222222": {
+        "nome": "Ana Pereira",
+        "datanascimento": "15/03/1980",
+        "endereco": {
+            "logradouro": "Rua A",
+            "nro": 101,
+            "bairro": "Centro",
+            "cidade": "São Paulo",
+            "uf": "SP"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "33333333333": {
+        "nome": "Bruno Silva",
+        "datanascimento": "22/07/1992",
+        "endereco": {
+            "logradouro": "Rua B",
+            "nro": 202,
+            "bairro": "Vila Nova",
+            "cidade": "Rio de Janeiro",
+            "uf": "RJ"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "44444444444": {
+        "nome": "Carlos Souza",
+        "datanascimento": "10/11/1985",
+        "endereco": {
+            "logradouro": "Rua C",
+            "nro": 303,
+            "bairro": "Jardim América",
+            "cidade": "Belo Horizonte",
+            "uf": "MG"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "55555555555": {
+        "nome": "Daniela Santos",
+        "datanascimento": "05/05/1978",
+        "endereco": {
+            "logradouro": "Rua D",
+            "nro": 404,
+            "bairro": "Centro",
+            "cidade": "Curitiba",
+            "uf": "PR"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "66666666666": {
+        "nome": "Eduardo Lima",
+        "datanascimento": "30/09/1990",
+        "endereco": {
+            "logradouro": "Rua E",
+            "nro": 505,
+            "bairro": "São Francisco",
+            "cidade": "Porto Alegre",
+            "uf": "RS"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "77777777777": {
+        "nome": "Fernanda Oliveira",
+        "datanascimento": "14/02/1988",
+        "endereco": {
+            "logradouro": "Rua F",
+            "nro": 606,
+            "bairro": "Boa Vista",
+            "cidade": "Salvador",
+            "uf": "BA"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "88888888888": {
+        "nome": "Gabriel Fernandes",
+        "datanascimento": "25/12/1995",
+        "endereco": {
+            "logradouro": "Rua G",
+            "nro": 707,
+            "bairro": "Centro",
+            "cidade": "Recife",
+            "uf": "PE"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "99999999999": {
+        "nome": "Helena Costa",
+        "datanascimento": "08/08/1983",
+        "endereco": {
+            "logradouro": "Rua H",
+            "nro": 808,
+            "bairro": "Jardim Paulista",
+            "cidade": "São Paulo",
+            "uf": "SP"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "00000000000": {
+        "nome": "Igor Martins",
+        "datanascimento": "12/06/1987",
+        "endereco": {
+            "logradouro": "Rua I",
+            "nro": 909,
+            "bairro": "Santa Cecília",
+            "cidade": "Fortaleza",
+            "uf": "CE"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    },
+    "11111111110": {
+        "nome": "Juliana Alves",
+        "datanascimento": "20/10/1993",
+        "endereco": {
+            "logradouro": "Rua J",
+            "nro": 1010,
+            "bairro": "Centro",
+            "cidade": "Manaus",
+            "uf": "AM"
+        },
+        "contas": {
+            "id": None
+        },
+        "situacao": "A",
+        "logado": False
+    }
+}
 
 
 contas = {
@@ -61,6 +238,7 @@ contas = {
 }
 
 numero_conta = 1
+clienteLogado = {}
 
 saldo = 0
 extrato = "\n"
@@ -113,7 +291,8 @@ def cliente(opMenu, clientes):
                     "contas": {
                         "id": None
                     },
-                    "situacao": "A"
+                    "situacao": "A",
+                    "logado": False
                 }
 
                 return cpf, dadosClientes
@@ -155,13 +334,14 @@ def extrato():
     pass
 
 
+logado = False
+
 while True:
     os.system("cls")
     print(menuCliente)
     opcao = input()
     print()
 
-    logado = False
     if (opcao.lower() == 'c'):
         cpf, dadosClientes = cliente(opcao, clientes)
         if (cpf != ""):
@@ -170,8 +350,21 @@ while True:
     elif (opcao.lower() == 'l'):
         cpf, _ = cliente(opcao, clientes)
         if (cpf != ""):
-            print("Logado com sucesso!")
-            logado = True
+            clientes[cpf]["logado"] = True
+            while clientes[cpf]["logado"]:
+                os.system("cls")
+                print(menuContas)
+                opcao = input()
+                print()
+                if (opcao.lower() == 'c'):
+                    pass
+                elif (opcao.lower() == 'l'):
+                    pass
+                elif (opcao.lower() == 'i'):
+                    pass
+                elif (opcao.lower() == 'q'):
+                    pass
+
     elif (opcao.lower() == "q"):
         os.system("cls")
         print("Obrigado por utilizar o nosso banco!")
