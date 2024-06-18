@@ -121,7 +121,22 @@ def cliente(opMenu, clientes):
                 print("CPF inválido! CPF deve ter com 11 dígitos!")
 
     elif (opMenu == 'l'):
-        pass
+        print("#####################################################")
+        print("# Login")
+        print("#####################################################")
+        print()
+        while True:
+            print(
+                "Informe o CPF do Cliente (sem pontos e sem digitos. Somente números):")
+            cpf = input()
+            if (cpf.isnumeric() and len(cpf) == 11):
+                for chave in clientes:
+                    if (chave == cpf):
+                        return cpf, {}
+                print("CPF não localizado! Por favor, cadastre-se!")
+                return "", {}
+            else:
+                print("CPF inválido! CPF deve ter com 11 dígitos!")
 
 
 def conta():
@@ -146,18 +161,32 @@ while True:
     opcao = input()
     print()
 
+    logado = False
     if (opcao.lower() == 'c'):
         cpf, dadosClientes = cliente(opcao, clientes)
         if (cpf != ""):
             clientes[cpf] = dadosClientes
             print(clientes)
     elif (opcao.lower() == 'l'):
-        cliente(opcao, clientes)
+        cpf, _ = cliente(opcao, clientes)
+        if (cpf != ""):
+            print("Logado com sucesso!")
+            logado = True
     elif (opcao.lower() == "q"):
+        os.system("cls")
         print("Obrigado por utilizar o nosso banco!")
         break
     else:
         print("Opção inválida!")
+        continue
+
+    print()
+    if (not logado):
+        print("Precione qualquer [ENTER] para retornar ao menu principal!")
+        opcao = input()
+    else:
+        print("Ta logado!")
+        pass
 
     """
     if (opcao.lower() == "s"):
@@ -203,6 +232,3 @@ while True:
     else:
         print("Opção inválida!")
     """
-    print()
-    print("Precione qualquer [ENTER] para retornar ao menu principal!")
-    opcao = input()
