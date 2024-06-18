@@ -3,11 +3,10 @@ import os
 menuPrincipal = """
 #####################################################
 
-MENU PRINCIPAL
+MENU USUÁRIO
 
 [ C ] - Criar Usuário
 [ L ] - Logar Usuário
-[ E ] - Excluir Usuário
 [ Q ] - Sair
 
 #####################################################
@@ -15,10 +14,25 @@ MENU PRINCIPAL
 Escolha a sua opção:
 """
 
+menuContas = """
+#####################################################
+
+MENU CONTAS
+
+[ C ] - Criar Contas
+[ L ] - Logar Contas
+[ I ] - Inativar Contas
+[ Q ] - Retornar Menu Anterior
+
+#####################################################
+
+Escolha a sua opção:
+"""
 
 menuOperacoes = """
 #####################################################
-# Agência: 0001 - Conta: xxxx - Nome: yyyyyyyyyyy   # 
+# Agência: 0001 - Conta: xxxx -                     #
+# CPF: xxxxxxxxxxx - Nome: yyyyyyy yyyyyyyy yyy     # 
 #####################################################
 
 ESCOLHA A OPERAÇÃO:
@@ -26,7 +40,7 @@ ESCOLHA A OPERAÇÃO:
 [ D ] - Depósito
 [ S ] - Saque
 [ E ] - Extrato
-[ Q ] - Sair
+[ Q ] - Retornar Menu Anterior
 
 #####################################################
 
@@ -45,7 +59,8 @@ clientes = {
         },
         "contas": {
             "id": None
-        }
+        },
+        "situacao": None
     }
 }
 
@@ -53,7 +68,11 @@ clientes = {
 contas = {
     "conta": {
         "agencia": "001",
-        "cliente": None
+        "cliente": None,
+        "saldo": None,
+        "extrato": "\n",
+        "limite_saque": 0,
+        "situacao": None
     }
 }
 
