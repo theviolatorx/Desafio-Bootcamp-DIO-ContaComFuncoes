@@ -1,5 +1,10 @@
 import os
 
+logado = False
+numero_conta = 1
+LIMITE_SAQUE = 500
+LIMITES_SAQUE_DIARIO = 3
+
 menuCliente = """
 #####################################################
 
@@ -21,7 +26,6 @@ MENU CONTAS
 
 [ C ] - Criar Contas
 [ L ] - Logar Contas
-[ I ] - Inativar Contas
 [ Q ] - Retornar Menu Anterior
 
 #####################################################
@@ -46,6 +50,8 @@ ESCOLHA A OPERAÇÃO:
 
 Escolha a sua opção:
 """
+# TODO: Alterar quando colocar em produção
+# clientes = {}
 clientes = {
     "11111111111": {
         "nome": "Paulo Ambrosio",
@@ -57,7 +63,7 @@ clientes = {
             "cidade": "Itanhaém",
             "uf": "SP"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -73,7 +79,7 @@ clientes = {
             "cidade": "São Paulo",
             "uf": "SP"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -89,7 +95,7 @@ clientes = {
             "cidade": "Rio de Janeiro",
             "uf": "RJ"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -105,7 +111,7 @@ clientes = {
             "cidade": "Belo Horizonte",
             "uf": "MG"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -121,7 +127,7 @@ clientes = {
             "cidade": "Curitiba",
             "uf": "PR"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -137,7 +143,7 @@ clientes = {
             "cidade": "Porto Alegre",
             "uf": "RS"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -153,7 +159,7 @@ clientes = {
             "cidade": "Salvador",
             "uf": "BA"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -169,7 +175,7 @@ clientes = {
             "cidade": "Recife",
             "uf": "PE"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -185,7 +191,7 @@ clientes = {
             "cidade": "São Paulo",
             "uf": "SP"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -201,7 +207,7 @@ clientes = {
             "cidade": "Fortaleza",
             "uf": "CE"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -217,7 +223,7 @@ clientes = {
             "cidade": "Manaus",
             "uf": "AM"
         },
-        "contas": {
+        "conta": {
             "id": None
         },
         "situacao": "A",
@@ -225,26 +231,90 @@ clientes = {
     }
 }
 
-
+# TODO: Alterar quando colocar em produção
+# contas = {}
 contas = {
-    "conta": {
-        "agencia": "001",
-        "cliente": None,
-        "saldo": None,
+    1: {
+        "agencia": "0001",
+        "cpf": "11111111110",
+        "saldo": 0,
         "extrato": "\n",
-        "limite_saque": 0,
-        "situacao": None
+        "limite_saque": LIMITE_SAQUE,
+        "limite_saque_diario": 0,
+        "situacao": "A",
+        "logado": False
+    },
+    2: {
+        "agencia": "0001",
+        "cpf": "11111111111",
+        "saldo": 0,
+        "extrato": "\n",
+        "limite_saque": LIMITE_SAQUE,
+        "limite_saque_diario": 0,
+        "situacao": "A",
+        "logado": False
+    },
+    3: {
+        "agencia": "0001",
+        "cpf": "77777777777",
+        "saldo": 0,
+        "extrato": "\n",
+        "limite_saque": LIMITE_SAQUE,
+        "limite_saque_diario": 0,
+        "situacao": "A",
+        "logado": False
+    },
+    4: {
+        "agencia": "0001",
+        "cpf": "11111111110",
+        "saldo": 0,
+        "extrato": "\n",
+        "limite_saque": LIMITE_SAQUE,
+        "limite_saque_diario": 0,
+        "situacao": "A",
+        "logado": False
+    },
+    5: {
+        "agencia": "0001",
+        "cpf": "11111111110",
+        "saldo": 0,
+        "extrato": "\n",
+        "limite_saque": LIMITE_SAQUE,
+        "limite_saque_diario": 0,
+        "situacao": "A",
+        "logado": False
+    },
+    6: {
+        "agencia": "0001",
+        "cpf": "33333333333",
+        "saldo": 0,
+        "extrato": "\n",
+        "limite_saque": LIMITE_SAQUE,
+        "limite_saque_diario": 0,
+        "situacao": "A",
+        "logado": False
+    },
+    7: {
+        "agencia": "0001",
+        "cpf": "11111111111",
+        "saldo": 0,
+        "extrato": "\n",
+        "limite_saque": LIMITE_SAQUE,
+        "limite_saque_diario": 0,
+        "situacao": "A",
+        "logado": False
+    },
+    8: {
+        "agencia": "0001",
+        "cpf": "22222222222",
+        "saldo": 0,
+        "extrato": "\n",
+        "limite_saque": LIMITE_SAQUE,
+        "limite_saque_diario": 0,
+        "situacao": "A",
+        "logado": False
     }
 }
-
-numero_conta = 1
-clienteLogado = {}
-
-saldo = 0
-extrato = "\n"
-saques_realizados = 0
-LIMITE_SAQUE = 500
-LIMITES_SAQUE_DIARIO = 3
 
 
 def cliente(opMenu, clientes):
@@ -268,8 +338,7 @@ def cliente(opMenu, clientes):
                 datanascimento = input()
                 print("Informe o nome da rua/avenida do Cliente: ")
                 logradouro = input()
-                print(
-                    "Informe o número da casa: (Use s/n caso não tenha número) ")
+                print("Informe o número da casa: (Use s/n caso não tenha número)")
                 nro = input()
                 print("Informe o bairro: ")
                 bairro = input()
@@ -288,7 +357,7 @@ def cliente(opMenu, clientes):
                         "cidade": cidade,
                         "uf": uf
                     },
-                    "contas": {
+                    "conta": {
                         "id": None
                     },
                     "situacao": "A",
@@ -301,7 +370,7 @@ def cliente(opMenu, clientes):
 
     elif (opMenu == 'l'):
         print("#####################################################")
-        print("# Login")
+        print("# Login Cliente")
         print("#####################################################")
         print()
         while True:
@@ -318,8 +387,49 @@ def cliente(opMenu, clientes):
                 print("CPF inválido! CPF deve ter com 11 dígitos!")
 
 
-def conta():
-    pass
+def conta(opcao, cpf, contas, nomecliente, numero_conta, limite_saque):
+    os.system("cls")
+    if (opcao.lower() == 'c'):
+        print("#####################################################")
+        print("# Criação de Conta")
+        print("# ")
+        print(f"# Cliente: {nomecliente} / CPF: {cpf}")
+        print("#####################################################")
+        print()
+        dadosContas = {
+            "agencia": "0001",
+            "cpf": cpf,
+            "saldo": 0,
+            "extrato": "\n",
+            "limite_saque": limite_saque,
+            "limite_saque_diario": 0,
+            "situacao": "A",
+            "logado": False
+        }
+        print("Dados da conta criada")
+        print(f"Agência: 0001 / Número da Conta: {numero_conta}")
+        print()
+        numero_conta += 1
+
+        return dadosContas, numero_conta
+
+    if (opcao.lower() == 'l'):
+        print("#####################################################")
+        print("# Acessar Conta")
+        print("# ")
+        print(f"# Cliente: {nomecliente} / CPF: {cpf}")
+        print("#####################################################")
+        print()
+        print("Relação de contas:")
+        print()
+        i = 1
+        for chave, valor in contas.items():
+            if (contas[chave]["cpf"] == cpf):
+                print(
+                    f'[ {i} ] - Agência: 0001 - Conta: {chave} - Saldo: {contas[chave]["saldo"]} ')
+            i += 1
+
+        input()
 
 
 def saques():
@@ -333,8 +443,6 @@ def deposito():
 def extrato():
     pass
 
-
-logado = False
 
 while True:
     os.system("cls")
@@ -351,27 +459,37 @@ while True:
         cpf, _ = cliente(opcao, clientes)
         if (cpf != ""):
             clientes[cpf]["logado"] = True
+            logado = clientes[cpf]["logado"]
             while clientes[cpf]["logado"]:
                 os.system("cls")
                 print(menuContas)
                 opcao = input()
                 print()
                 if (opcao.lower() == 'c'):
-                    pass
+                    dadosContas, numero_conta = conta(opcao, cpf, contas,
+                                                      clientes[cpf]["nome"], numero_conta, LIMITE_SAQUE)
+                    contas[numero_conta] = dadosContas
+                    print("Conta criada com sucesso!")
+                    print()
                 elif (opcao.lower() == 'l'):
-                    pass
+                    dadosContas, numero_conta = conta(opcao, cpf, contas,
+                                                      clientes[cpf]["nome"], numero_conta, LIMITE_SAQUE)
                 elif (opcao.lower() == 'i'):
                     pass
                 elif (opcao.lower() == 'q'):
                     pass
 
-    elif (opcao.lower() == "q"):
-        os.system("cls")
-        print("Obrigado por utilizar o nosso banco!")
-        break
-    else:
-        print("Opção inválida!")
-        continue
+                print(
+                    "Precione qualquer [ENTER] para retornar ao menu principal!")
+                opcao = input()
+
+        elif (opcao.lower() == "q"):
+            os.system("cls")
+            print("Obrigado por utilizar o nosso banco!")
+            break
+        else:
+            print("Opção inválida!")
+            continue
 
     print()
     if (not logado):
@@ -382,46 +500,46 @@ while True:
         pass
 
     """
-    if (opcao.lower() == "s"):
-        print("Informe o valor a ser depositado: ")
-        valor_deposito = input()
-        if (valor_deposito.isnumeric() and float(valor_deposito) > 0):
-            valor_deposito = float(valor_deposito)
-            saldo += valor_deposito
-            print("Deposito realizado com sucesso!")
-            extrato += f'Deposito R$  {valor_deposito:.2f}\n'
-            extrato += f'Saldo    R$  {saldo:.2f}\n'
-        else:
-            print("Valor informado inválido!")
-    elif (opcao.lower() == "s"):
-        if (saques_realizados < LIMITES_SAQUE_DIARIO):
-            print("Informe o valor a ser sacado: ")
-            valor_saque = input()
-            if (valor_saque.isnumeric() and float(valor_saque) > 0):
-                valor_saque = float(valor_saque)
-                if (valor_saque > LIMITE_SAQUE):
-                    print(f'Valor de saque excedeu o valor de R$ {
-                        LIMITE_SAQUE:.2f}!')
-                elif (valor_saque > saldo):
-                    print(f'Valor de saque excedeu o saldo em conta!')
-                else:
-                    saldo -= valor_saque
-                    print("Saque realizado com sucesso!")
-                    saques_realizados += 1
-                    extrato += f'Saque    R$ -{valor_saque:.2f}\n'
-                    extrato += f'Saldo    R$  {saldo:.2f}\n'
-            else:
-                print("Valor informado inválido!")
-        else:
-            print(f'Você já excedeu o limite de saques diários! {
-                  LIMITES_SAQUE_DIARIO} por dia!')
-    elif (opcao.lower() == "e"):
-        print("EXTRATO")
-        print(extrato)
-        print()
-    elif (opcao.lower() == "q"):
-        print("Obrigado por utilizar o nosso banco!")
-        break
-    else:
-        print("Opção inválida!")
-    """
+if (opcao.lower() == "s"):
+print("Informe o valor a ser depositado: ")
+valor_deposito = input()
+if (valor_deposito.isnumeric() and float(valor_deposito) > 0):
+valor_deposito = float(valor_deposito)
+saldo += valor_deposito
+print("Deposito realizado com sucesso!")
+extrato += f'Deposito R$  {valor_deposito:.2f}\n'
+extrato += f'Saldo    R$  {saldo:.2f}\n'
+else:
+print("Valor informado inválido!")
+elif (opcao.lower() == "s"):
+if (saques_realizados < LIMITES_SAQUE_DIARIO):
+print("Informe o valor a ser sacado: ")
+valor_saque = input()
+if (valor_saque.isnumeric() and float(valor_saque) > 0):
+valor_saque = float(valor_saque)
+if (valor_saque > LIMITE_SAQUE):
+    print(f'Valor de saque excedeu o valor de R$ {
+        LIMITE_SAQUE:.2f}!')
+elif (valor_saque > saldo):
+    print(f'Valor de saque excedeu o saldo em conta!')
+else:
+    saldo -= valor_saque
+    print("Saque realizado com sucesso!")
+    saques_realizados += 1
+    extrato += f'Saque    R$ -{valor_saque:.2f}\n'
+    extrato += f'Saldo    R$  {saldo:.2f}\n'
+else:
+print("Valor informado inválido!")
+else:
+print(f'Você já excedeu o limite de saques diários! {
+  LIMITES_SAQUE_DIARIO} por dia!')
+elif (opcao.lower() == "e"):
+print("EXTRATO")
+print(extrato)
+print()
+elif (opcao.lower() == "q"):
+print("Obrigado por utilizar o nosso banco!")
+break
+else:
+print("Opção inválida!")
+"""
