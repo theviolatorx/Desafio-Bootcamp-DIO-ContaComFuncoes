@@ -1,9 +1,27 @@
 import os
 
-menu = """
+menuPrincipal = """
 #####################################################
 
-MENU PRINCIPAL:
+MENU PRINCIPAL
+
+[ C ] - Criar Usuário
+[ L ] - Logar Usuário
+[ E ] - Excluir Usuário
+[ Q ] - Sair
+
+#####################################################
+
+Escolha a sua opção:
+"""
+
+
+menuOperacoes = """
+#####################################################
+# Agência: 0001 - Conta: xxxx - Nome: yyyyyyyyyyy   # 
+#####################################################
+
+ESCOLHA A OPERAÇÃO:
 
 [ D ] - Depósito
 [ S ] - Saque
@@ -14,6 +32,32 @@ MENU PRINCIPAL:
 
 Escolha a sua opção:
 """
+clientes = {
+    "cpf": {
+        "nome": None,
+        "datanascimento": None,
+        "endereco": {
+            "logradouro": None,
+            "nro": None,
+            "bairro": None,
+            "cidade": None,
+            "uf": None
+        },
+        "contas": {
+            "id": None
+        }
+    }
+}
+
+
+contas = {
+    "conta": {
+        "agencia": "001",
+        "cliente": None
+    }
+}
+
+numero_conta = 1
 
 saldo = 0
 extrato = "\n"
