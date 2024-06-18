@@ -1,9 +1,9 @@
 import os
 
-menuPrincipal = """
+menuCliente = """
 #####################################################
 
-MENU USUÁRIO
+MENU CLIENTE
 
 [ C ] - Criar Usuário
 [ L ] - Logar Usuário
@@ -32,7 +32,7 @@ Escolha a sua opção:
 menuOperacoes = """
 #####################################################
 # Agência: 0001 - Conta: xxxx -                     #
-# CPF: xxxxxxxxxxx - Nome: yyyyyyy yyyyyyyy yyy     # 
+# CPF: xxxxxxxxxxx - Nome: yyyyyyy yyyyyyyy yyy     #
 #####################################################
 
 ESCOLHA A OPERAÇÃO:
@@ -46,23 +46,7 @@ ESCOLHA A OPERAÇÃO:
 
 Escolha a sua opção:
 """
-clientes = {
-    "cpf": {
-        "nome": None,
-        "datanascimento": None,
-        "endereco": {
-            "logradouro": None,
-            "nro": None,
-            "bairro": None,
-            "cidade": None,
-            "uf": None
-        },
-        "contas": {
-            "id": None
-        },
-        "situacao": None
-    }
-}
+clientes = {}
 
 
 contas = {
@@ -84,29 +68,99 @@ saques_realizados = 0
 LIMITE_SAQUE = 500
 LIMITES_SAQUE_DIARIO = 3
 
-def cliente():
-    pass
+
+def cliente(opMenu, clientes):
+    os.system("cls")
+    if (opMenu == 'c'):
+        print("#####################################################")
+        print("Cadastro de Cliente")
+        print("#####################################################")
+        print()
+        while True:
+            print("Informe o CPF do Cliente (sem pontos e sem digitos. Somente números):")
+            cpf = input()
+            if (cpf.isnumeric() and len(cpf) == 11):
+                for chave in clientes:
+                    if (chave == cpf):
+                        print("CPF já cadastrado! Por favor, logue-se!")
+                        return "", {}
+                print("Informe o nome do Cliente: ")
+                nome = input()
+                print("Informe a data de nascimento do Cliente (dd/mm/aaaa):")
+                datanascimento = input()
+                print("Informe o nome da rua/avenida do Cliente: ")
+                logradouro = input()
+                print(
+                    "Informe o número da casa: (Use s/n caso não tenha número) ")
+                nro = input()
+                print("Informe o bairro: ")
+                bairro = input()
+                print("Informe a cidade: ")
+                cidade = input()
+                print("Informe o UF: (Apenas a Sigla) ")
+                uf = input()
+
+                dadosClientes = {
+                    "nome": nome,
+                    "datanascimento": datanascimento,
+                    "endereco": {
+                        "logradouro": logradouro,
+                        "nro": nro,
+                        "bairro": bairro,
+                        "cidade": cidade,
+                        "uf": uf
+                    },
+                    "contas": {
+                        "id": None
+                    },
+                    "situacao": "A"
+                }
+
+                return cpf, dadosClientes
+            else:
+                print("CPF inválido! CPF deve ter com 11 dígitos!")
+
+    elif (opMenu == 'l'):
+        pass
+
 
 def conta():
     pass
 
+
 def saques():
     pass
+
 
 def deposito():
     pass
 
+
 def extrato():
     pass
 
+
 while True:
     os.system("cls")
-    print(menu)
+    print(menuCliente)
     opcao = input()
-
     print()
 
-    if (opcao.lower() == "d"):
+    if (opcao.lower() == 'c'):
+        cpf, dadosClientes = cliente(opcao, clientes)
+        if (cpf != ""):
+            clientes[cpf] = dadosClientes
+            print(clientes)
+    elif (opcao.lower() == 'l'):
+        cliente(opcao, clientes)
+    elif (opcao.lower() == "q"):
+        print("Obrigado por utilizar o nosso banco!")
+        break
+    else:
+        print("Opção inválida!")
+
+    """
+    if (opcao.lower() == "s"):
         print("Informe o valor a ser depositado: ")
         valor_deposito = input()
         if (valor_deposito.isnumeric() and float(valor_deposito) > 0):
@@ -148,7 +202,7 @@ while True:
         break
     else:
         print("Opção inválida!")
-
+    """
     print()
     print("Precione qualquer [ENTER] para retornar ao menu principal!")
     opcao = input()
