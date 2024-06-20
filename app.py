@@ -442,7 +442,6 @@ def conta(opcao, cpf, contas, nomecliente, numero_conta, limite_saque):
 def deposito(saldo, valor, extrato, /):
     saldo += valor
     extrato += f'Deposito R$  {valor:.2f}\n'
-    extrato += f'Saldo    R$  {saldo:.2f}\n'
     return saldo, extrato
 
 
@@ -460,17 +459,16 @@ def saque(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
             saldo -= valor
             print("Saque realizado com sucesso!")
             limite_saques += 1
-            extrato += f'Saque    R$ -{valor_saque:.2f}\n'
-            extrato += f'Saldo    R$  {saldo:.2f}\n'
+            extrato += f'Saque    R$ -{valor:.2f}\n'
     else:
         print(f'Você já excedeu o limite de saques diários! {
               numero_saques} por dia!')
-    return saldo, extrato
+    return saldo, extrato, limite_saques
 
 
-def extrato():
-    print("EXTRATO")
+def extrato(saldo, /, *, extrato):
     print(extrato)
+    print(f'\n\nSaldo    R$ {saldo:.2f}')
     print()
 
 
@@ -536,23 +534,26 @@ while True:
                                 valor_saque = input()
                                 if (valor_saque.isnumeric() and float(valor_saque) > 0):
                                     valor_saque = float(valor_saque)
-                                    contas[contaLogada]["saldo"], contas[contaLogada]["extrato"] = saque(saldo=contas[contaLogada]["saldo"], valor=valor_saque, extrato=contas[contaLogada][
+                                    contas[contaLogada]["saldo"], contas[contaLogada]["extrato"], contas[contaLogada]["limite_saque_diario"] = saque(saldo=contas[contaLogada]["saldo"], valor=valor_saque, extrato=contas[contaLogada][
                                         "extrato"], limite=contas[contaLogada]["limite_saque"], numero_saques=LIMITES_SAQUE_DIARIO, limite_saques=contas[contaLogada]["limite_saque_diario"])
                                 else:
                                     print(
                                         "Valor informado inválido!")
-                                # contas[contaLogada]["saldo"] = retSaldo
-                                # contas[contaLogada]["extrato"] = retExtrato
                             elif (opcao.lower() == "e"):
-                                pass
+                                print('EXTRATO')
+                                print()
+                                extrato(contas[contaLogada]["saldo"],
+                                        extrato=contas[contaLogada]["extrato"])
+                            elif (opcao.lower() == "q"):
+                                contas[contaLogada]["logado"] = False
                             print()
                             print(
                                 "Precione [ENTER] para continuar!")
                             input()
                 elif (opcao.lower() == 'q'):
                     clientes[cpf]["logado"] = False
-                    if (contaLogada != -1):
-                        contas[contaLogada]["logado"] = False
+                    # if (contaLogada != -1):
+                    # contas[contaLogada]["logado"] = False
                     break
 
         if (not logado):
