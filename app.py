@@ -418,14 +418,14 @@ def conta(opcao, cpf, contas, nomecliente, numero_conta, limite_saque):
         print()
         print("Relação de contas:")
         print()
-        i = 1
+        # i = 1
         listaContasCliente = []
         for chave, valor in contas.items():
             if (contas[chave]["cpf"] == cpf):
                 print(
                     f'[ {chave} ] - Agência: 0001 - Conta: {chave} - Saldo: {contas[chave]["saldo"]} ')
-                listaContasCliente.append(i)
-            i += 1
+                listaContasCliente.append(chave)
+            # i += 1
         print()
         print("Escolha a conta a qual deseja logar: ")
         opcaoConta = input()
@@ -439,16 +439,39 @@ def conta(opcao, cpf, contas, nomecliente, numero_conta, limite_saque):
             return {}, 0
 
 
-def saques():
-    pass
+def deposito(saldo, valor, extrato, /):
+    saldo += valor
+    extrato += f'Deposito R$  {valor:.2f}\n'
+    extrato += f'Saldo    R$  {saldo:.2f}\n'
+    return saldo, extrato
 
 
-def deposito():
-    pass
+def saque(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
+    if (limite_saques < numero_saques):
+        if (valor > LIMITE_SAQUE):
+            print(f'Valor de saque excedeu o valor de R$ {
+                  LIMITE_SAQUE:.2f} por saque!')
+        elif (valor > saldo):
+            print(f'O valor do saque excedeu o saldo em conta!')
+        elif (valor > limite):
+            print(
+                f'O valor do saque excedeu o valor de saque diário de R$ {limite}')
+        else:
+            saldo -= valor
+            print("Saque realizado com sucesso!")
+            limite_saques += 1
+            extrato += f'Saque    R$ -{valor_saque:.2f}\n'
+            extrato += f'Saldo    R$  {saldo:.2f}\n'
+    else:
+        print(f'Você já excedeu o limite de saques diários! {
+              numero_saques} por dia!')
+    return saldo, extrato
 
 
 def extrato():
-    pass
+    print("EXTRATO")
+    print(extrato)
+    print()
 
 
 while True:
@@ -490,15 +513,42 @@ while True:
                                 "#####################################################")
                             print(
                                 # ")
-                                f"# Agência: 0001 - Conta: {contas[contaLogada].keys()} #")
+                                f"# Agência: 0001 - Conta: {contaLogada} #")
                             print(
-                                f"# CPF: {clientes[cpf]} - Nome: {clientes[cpf]["nome"]} #")
+                                f"# CPF: {contas[contaLogada]["cpf"]} - Nome: {clientes[cpf]["nome"]} #")
                             print(
                                 "#####################################################")
                             print(menuOperacoes)
                             opcao = input()
                             print()
-
+                            if (opcao.lower() == "d"):
+                                print("Informe o valor a ser depositado: ")
+                                valor_deposito = input()
+                                if (valor_deposito.isnumeric() and float(valor_deposito) > 0):
+                                    valor_deposito = float(valor_deposito)
+                                    contas[contaLogada]["saldo"], contas[contaLogada]["extrato"] = deposito(
+                                        contas[contaLogada]["saldo"], valor_deposito, contas[contaLogada]["extrato"])
+                                    print("Deposito realizado com sucesso!")
+                                else:
+                                    print("Valor informado inválido!")
+                            elif (opcao.lower() == "s"):
+                                print("Informe o valor a ser sacado: ")
+                                valor_saque = input()
+                                if (valor_saque.isnumeric() and float(valor_saque) > 0):
+                                    valor_saque = float(valor_saque)
+                                    contas[contaLogada]["saldo"], contas[contaLogada]["extrato"] = saque(saldo=contas[contaLogada]["saldo"], valor=valor_saque, extrato=contas[contaLogada][
+                                        "extrato"], limite=contas[contaLogada]["limite_saque"], numero_saques=LIMITES_SAQUE_DIARIO, limite_saques=contas[contaLogada]["limite_saque_diario"])
+                                else:
+                                    print(
+                                        "Valor informado inválido!")
+                                # contas[contaLogada]["saldo"] = retSaldo
+                                # contas[contaLogada]["extrato"] = retExtrato
+                            elif (opcao.lower() == "e"):
+                                pass
+                            print()
+                            print(
+                                "Precione [ENTER] para continuar!")
+                            input()
                 elif (opcao.lower() == 'q'):
                     clientes[cpf]["logado"] = False
                     if (contaLogada != -1):
@@ -508,7 +558,7 @@ while True:
         if (not logado):
             print(
                 "Precione qualquer [ENTER] para retornar ao menu principal!")
-            opcao = input()
+            input()
 
     elif (opcao.lower() == "q"):
         os.system("cls")
@@ -528,46 +578,5 @@ while True:
         pass
 
     """
-if (opcao.lower() == "s"):
-print("Informe o valor a ser depositado: ")
-valor_deposito = input()
-if (valor_deposito.isnumeric() and float(valor_deposito) > 0):
-valor_deposito = float(valor_deposito)
-saldo += valor_deposito
-print("Deposito realizado com sucesso!")
-extrato += f'Deposito R$  {valor_deposito:.2f}\n'
-extrato += f'Saldo    R$  {saldo:.2f}\n'
-else:
-print("Valor informado inválido!")
-elif (opcao.lower() == "s"):
-if (saques_realizados < LIMITES_SAQUE_DIARIO):
-print("Informe o valor a ser sacado: ")
-valor_saque = input()
-if (valor_saque.isnumeric() and float(valor_saque) > 0):
-valor_saque = float(valor_saque)
-if (valor_saque > LIMITE_SAQUE):
-    print(f'Valor de saque excedeu o valor de R$ {
-        LIMITE_SAQUE:.2f}!')
-elif (valor_saque > saldo):
-    print(f'Valor de saque excedeu o saldo em conta!')
-else:
-    saldo -= valor_saque
-    print("Saque realizado com sucesso!")
-    saques_realizados += 1
-    extrato += f'Saque    R$ -{valor_saque:.2f}\n'
-    extrato += f'Saldo    R$  {saldo:.2f}\n'
-else:
-print("Valor informado inválido!")
-else:
-print(f'Você já excedeu o limite de saques diários! {
-  LIMITES_SAQUE_DIARIO} por dia!')
-elif (opcao.lower() == "e"):
-print("EXTRATO")
-print(extrato)
-print()
-elif (opcao.lower() == "q"):
-print("Obrigado por utilizar o nosso banco!")
-break
-else:
-print("Opção inválida!")
+
 """
