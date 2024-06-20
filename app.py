@@ -34,10 +34,6 @@ Escolha a sua opção:
 """
 
 menuOperacoes = """
-#####################################################
-# Agência: 0001 - Conta: xxxx -                     #
-# CPF: xxxxxxxxxxx - Nome: yyyyyyy yyyyyyyy yyy     #
-#####################################################
 
 ESCOLHA A OPERAÇÃO:
 
@@ -423,13 +419,24 @@ def conta(opcao, cpf, contas, nomecliente, numero_conta, limite_saque):
         print("Relação de contas:")
         print()
         i = 1
+        listaContasCliente = []
         for chave, valor in contas.items():
             if (contas[chave]["cpf"] == cpf):
                 print(
-                    f'[ {i} ] - Agência: 0001 - Conta: {chave} - Saldo: {contas[chave]["saldo"]} ')
+                    f'[ {chave} ] - Agência: 0001 - Conta: {chave} - Saldo: {contas[chave]["saldo"]} ')
+                listaContasCliente.append(i)
             i += 1
-
-        input()
+        print()
+        print("Escolha a conta a qual deseja logar: ")
+        opcaoConta = input()
+        if (opcaoConta.isnumeric() and int(opcaoConta) in listaContasCliente):
+            contas[int(opcaoConta)]["logado"] = True
+            return contas, int(opcaoConta)
+        else:
+            print()
+            print("Opção inválida! Pressione [ENTER] para continuar!")
+            input()
+            return {}, 0
 
 
 def saques():
@@ -460,6 +467,7 @@ while True:
         if (cpf != ""):
             clientes[cpf]["logado"] = True
             logado = clientes[cpf]["logado"]
+            contaLogada = -1
             while clientes[cpf]["logado"]:
                 os.system("cls")
                 print(menuContas)
@@ -472,27 +480,47 @@ while True:
                     print("Conta criada com sucesso!")
                     print()
                 elif (opcao.lower() == 'l'):
-                    dadosContas, numero_conta = conta(opcao, cpf, contas,
-                                                      clientes[cpf]["nome"], numero_conta, LIMITE_SAQUE)
-                elif (opcao.lower() == 'i'):
-                    pass
+                    retContas, contaLogada = conta(opcao, cpf, contas,
+                                                   clientes[cpf]["nome"], numero_conta, LIMITE_SAQUE)
+                    if (len(retContas) != 0):
+                        contas = retContas
+                        while contas[contaLogada]["logado"]:
+                            os.system("cls")
+                            print(
+                                "#####################################################")
+                            print(
+                                # ")
+                                f"# Agência: 0001 - Conta: {contas[contaLogada].keys()} #")
+                            print(
+                                f"# CPF: {clientes[cpf]} - Nome: {clientes[cpf]["nome"]} #")
+                            print(
+                                "#####################################################")
+                            print(menuOperacoes)
+                            opcao = input()
+                            print()
+
                 elif (opcao.lower() == 'q'):
-                    pass
+                    clientes[cpf]["logado"] = False
+                    if (contaLogada != -1):
+                        contas[contaLogada]["logado"] = False
+                    break
 
-                print(
-                    "Precione qualquer [ENTER] para retornar ao menu principal!")
-                opcao = input()
+        if (not logado):
+            print(
+                "Precione qualquer [ENTER] para retornar ao menu principal!")
+            opcao = input()
 
-        elif (opcao.lower() == "q"):
-            os.system("cls")
-            print("Obrigado por utilizar o nosso banco!")
-            break
-        else:
-            print("Opção inválida!")
-            continue
+    elif (opcao.lower() == "q"):
+        os.system("cls")
+        print("Obrigado por utilizar o nosso banco!")
+        break
+    else:
+        print("Opção inválida!")
+        continue
 
     print()
     if (not logado):
+        logado = False
         print("Precione qualquer [ENTER] para retornar ao menu principal!")
         opcao = input()
     else:
